@@ -1,4 +1,4 @@
-# 📄 Document question answering template
+# 📄 Document question answering using Groq API
 
 A simple Streamlit app that answers questions about an uploaded document via Groq API.
 
