@@ -95,31 +95,31 @@ with st.sidebar:
                     st.write("Please upload a PDF file first")
         
     
-    # Main section for question input and results
-    if "vector_store" in st.session_state:
-    
-        user_prompt = st.text_input("Enter Your Question related to the uploaded PDF")
-    
-        if st.button('Submit Prompt'):
-    
-            if user_prompt:
-                
-                if "vector_store" in st.session_state:
-    
-                    document_chain = create_stuff_documents_chain(llm, prompt)
-    
-                    retriever = st.session_state.vector_store.as_retriever()
-    
-                    retrieval_chain = create_retrieval_chain(retriever, document_chain)
-    
-                    response = retrieval_chain.invoke({'input': user_prompt})
-    
-                    st.write(response['answer'])
-    
-                else:
-    
-                    st.write("Please embed the document first by uploading a PDF file.")
-    
+# Main section for question input and results
+if "vector_store" in st.session_state:
+
+    user_prompt = st.text_input("Enter Your Question related to the uploaded PDF")
+
+    if st.button('Submit Prompt'):
+
+        if user_prompt:
+            
+            if "vector_store" in st.session_state:
+
+                document_chain = create_stuff_documents_chain(llm, prompt)
+
+                retriever = st.session_state.vector_store.as_retriever()
+
+                retrieval_chain = create_retrieval_chain(retriever, document_chain)
+
+                response = retrieval_chain.invoke({'input': user_prompt})
+
+                st.write(response['answer'])
+
             else:
-    
-                st.error('Please write your prompt')
+
+                st.write("Please embed the document first by uploading a PDF file.")
+
+        else:
+
+            st.error('Please write your prompt')
