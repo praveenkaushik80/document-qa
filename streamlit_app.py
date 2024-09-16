@@ -21,13 +21,24 @@ st.write(
 # Ask user for their Groq API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
 # via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
+# Define model options
+model_options = [
+    "llama3-8b-8192",
+    "llama3-70b-8192",
+    "llama-3.1-8b-instant",
+    "llama-3.1-70b-versatile",
+    "mixtral-8x7b-32768",
+    "gemma-7b-it",
+    "gemma2-9b-it"
+]
+selected_model = st.selectbox("Select any Groq Model", model_options)
 groq_api_key = st.text_input("Groq API Key", type="password")
 if not groq_api_key:
     st.info("Please add your Groq API key to continue.", icon="🗝️")
 else:
 
     # Create an Groq client.
-    llm = ChatGroq(groq_api_key=groq_api_key, model_name="Llama3-8b-8192")
+    llm = ChatGroq(groq_api_key=groq_api_key, model_name=selected_model)
 
     prompt = ChatPromptTemplate.from_template(
     """
