@@ -31,69 +31,71 @@ model_options = [
     "gemma-7b-it",
     "gemma2-9b-it"
 ]
-selected_model = st.selectbox("Select any Groq Model", model_options)
-groq_api_key = st.text_input("Groq API Key", type="password")
-if not groq_api_key:
-    st.info("Please add your Groq API key to continue.", icon="🗝️")
-else:
-
-    # Create an Groq client.
-    llm = ChatGroq(groq_api_key=groq_api_key, model_name=selected_model)
-
-    prompt = ChatPromptTemplate.from_template(
-    """
-    Answer the questions based on the provided context only.
-    Please provide the most accurate response based on the question.
-    <context>
-    {context}
-    <context>
-    Questions: {input}
-    """
-    )
+# Sidebar elements
+with st.sidebar:
+    selected_model = st.selectbox("Select any Groq Model", model_options)
+    groq_api_key = st.text_input("Groq API Key", type="password")
+    if not groq_api_key:
+        st.info("Please add your Groq API key to continue.", icon="🗝️")
+    else:
     
-    def create_vector_db_out_of_the_uploaded_pdf_file(pdf_file):
+        # Create an Groq client.
+        llm = ChatGroq(groq_api_key=groq_api_key, model_name=selected_model)
     
+        prompt = ChatPromptTemplate.from_template(
+        """
+        Answer the questions based on the provided context only.
+        Please provide the most accurate response based on the question.
+        <context>
+        {context}
+        <context>
+        Questions: {input}
+        """
+        )
+        
+        def create_vector_db_out_of_the_uploaded_pdf_file(pdf_file):
+        
     
-        if "vector_store" not in st.session_state:
-    
-            with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-    
-                temp_file.write(pdf_file.read())
-    
-                pdf_file_path = temp_file.name
-    
-            st.session_state.embeddings = HuggingFaceEmbeddings(model_name='BAAI/bge-small-en-v1.5', model_kwargs={'device': 'cpu'}, encode_kwargs={'normalize_embeddings': True})
-            
-            st.session_state.loader = PyPDFLoader(pdf_file_path)
-    
-            st.session_state.text_document_from_pdf = st.session_state.loader.load()
-    
-            st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-            
-            st.session_state.final_document_chunks = st.session_state.text_splitter.split_documents(st.session_state.text_document_from_pdf)
-    
-            st.session_state.vector_store = FAISS.from_documents(st.session_state.final_document_chunks, st.session_state.embeddings)
-    
-    
-    pdf_input_from_user = st.file_uploader("Upload the PDF file", type=['pdf'])
-    
-    
-    if pdf_input_from_user is not None:
-    
-        if st.button("Create the Vector DB from the uploaded PDF file"):
-            
-            if pdf_input_from_user is not None:
+            if "vector_store" not in st.session_state:
+        
+                with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        
+                    temp_file.write(pdf_file.read())
+        
+                    pdf_file_path = temp_file.name
+        
+                st.session_state.embeddings = HuggingFaceEmbeddings(model_name='BAAI/bge-small-en-v1.5', model_kwargs={'device': 'cpu'}, encode_kwargs={'normalize_embeddings': True})
                 
-                create_vector_db_out_of_the_uploaded_pdf_file(pdf_input_from_user)
+                st.session_state.loader = PyPDFLoader(pdf_file_path)
+        
+                st.session_state.text_document_from_pdf = st.session_state.loader.load()
+        
+                st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
                 
-                st.success("Vector Store DB for this PDF file Is Ready")
-            
-            else:
+                st.session_state.final_document_chunks = st.session_state.text_splitter.split_documents(st.session_state.text_document_from_pdf)
+        
+                st.session_state.vector_store = FAISS.from_documents(st.session_state.final_document_chunks, st.session_state.embeddings)
+        
+        
+        pdf_input_from_user = st.file_uploader("Upload the PDF file", type=['pdf'])
+        
+        
+        if pdf_input_from_user is not None:
+        
+            if st.button("Create the Vector DB from the uploaded PDF file"):
                 
-                st.write("Please upload a PDF file first")
+                if pdf_input_from_user is not None:
+                    
+                    create_vector_db_out_of_the_uploaded_pdf_file(pdf_input_from_user)
+                    
+                    st.success("Vector Store DB for this PDF file Is Ready")
+                
+                else:
+                    
+                    st.write("Please upload a PDF file first")
+        
     
-    
-    
+    # Main section for question input and results
     if "vector_store" in st.session_state:
     
         user_prompt = st.text_input("Enter Your Question related to the uploaded PDF")
