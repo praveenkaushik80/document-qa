@@ -2,8 +2,6 @@
 
 A simple Streamlit app that answers questions about an uploaded document via Groq API.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://document-questionnanswer-groq.streamlit.app/)
-
 ### How to run it
 
 1. Install the requirements
