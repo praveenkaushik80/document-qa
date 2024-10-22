@@ -24,7 +24,7 @@ This readme describes a system for question answering over a uploaded PDF docume
 ### Functionality
 1. Input Groq API Key: The system will prompt you to enter your Groq API key securely.
 2. Upload PDF Document: You can upload a PDF document for which you want to answer questions.
-3. Document Vectorization: The system will process the uploaded PDF and convert it into a vector representation suitable for Groq's LLMs (details on the vectorization process can be added here).
+3. Document Vectorization: The system will process the uploaded PDF and convert it into a vector representation suitable for Groq's LLMs.
 4. Question Answering: You can then ask questions related to the document. The system will use Groq's API and your chosen LLM model to answer your questions based on the document content.
 
 Disclaimer
