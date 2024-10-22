@@ -2,9 +2,9 @@
 
 A simple Streamlit app that answers questions about an uploaded document via Groq API.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://document-question-answering-template.streamlit.app/)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://document-questionnanswer-groq.streamlit.app/)
 
-### How to run it on your own machine
+### How to run it
 
 1. Install the requirements
 
@@ -17,6 +17,17 @@ A simple Streamlit app that answers questions about an uploaded document via Gro
    ```
    $ streamlit run streamlit_app.py
    ```
+
+This readme describes a system for question answering over a uploaded PDF document using Groq's API and Streamlit.
+
+### Prerequisites
+1. Groq API Key: You will need a Groq API key to access their Large Language Models (LLMs).
+
+### Functionality
+1. Input Groq API Key: The system will prompt you to enter your Groq API key securely.
+2. Upload PDF Document: You can upload a PDF document for which you want to answer questions.
+3. Document Vectorization: The system will process the uploaded PDF and convert it into a vector representation suitable for Groq's LLMs (details on the vectorization process can be added here).
+4. Question Answering: You can then ask questions related to the document. The system will use Groq's API and your chosen LLM model to answer your questions based on the document content.
 
 Disclaimer
 
